@@ -1,0 +1,29 @@
+piVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: calibre
+  labels:
+    app: calibre
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: calibre
+  template:
+    metadata:
+      name: calibre
+      labels:
+        app: calibre
+    spec:
+      volumes:
+        - name: epub
+          nfs:
+            server: 192.168.1.5
+            path: "/volume1/download/epub"
+            readOnly: false
+      containers:
+        - name: calibre
+          image: aptalca/docker-rdp-calibre
+          volumeMounts:
+              - name: epub
+                mountPath: "/config"
